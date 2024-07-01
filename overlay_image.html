@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Overlay Image on Google Maps</title>
+
+    <script async
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQ0nPEJqM3dD0Madk6ozcqAYmMPOV_Sdo&loading=async&callback=initMap">
+    </script>
+
+    
+    <style>
+        #map {
+            height: 100%;
+        }
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        #controls {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 5;
+            background-color: white;
+            padding: 10px;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div id="controls">
+        Transparency<br>
+
+        <input type="range" id="transparency" min="0" max="1" step="0.01" value="0.5">
+        <br>
+
+        <button id="zoomIn">Zoom In</button>
+        <button id="zoomOut">Zoom Out</button>
+    </div>
+    <script>
+        function initMap() {
+            var imageBounds = {
+                north: 37.6610,
+                south: 37.6576,
+                east: -121.8022,
+                west: -121.8054
+            };
+
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 17,
+                center: {lat: 37.6819, lng: -121.7680},
+                mapTypeId: 'hybrid'
+            });
+
+            var overlay = new google.maps.GroundOverlay(
+                'contour_map.png',
+                imageBounds
+            );
+            overlay.setMap(map);
+            overlay.setOpacity(0.5);
+
+            var transparencySlider = document.getElementById('transparency');
+            transparencySlider.addEventListener('input', function() {
+                overlay.setOpacity(parseFloat(transparencySlider.value));
+            });
+
+            var zoomInButton = document.getElementById('zoomIn');
+            var zoomOutButton = document.getElementById('zoomOut');
+
+            zoomInButton.addEventListener('click', function() {
+                map.setZoom(map.getZoom() + 1);
+            });
+
+            zoomOutButton.addEventListener('click', function() {
+                map.setZoom(map.getZoom() - 1);
+            });
+        }
+    </script>
+
+<script async defer onload="initMap()">
+</script>
+</body>
+</html>
+ 
+ 
